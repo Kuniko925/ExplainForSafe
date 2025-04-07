@@ -11,7 +11,7 @@ def get_dataset(d_type="train"):
         df = pd.read_csv(f"{root}ISIC_2019_Test_GroundTruth.csv")
         df = uniform_dataframe(df)
         df["filepath"] = root + "ISIC_2019_Test_Input/" + df["image"] + ".jpg"
-        df["segpath"] = root + "SEG/" + df["image"] + "_segmentation.png"
+        df["segpath"] = root + "SEG/" + df["image"] + ".png"
         
     else:
         df = pd.read_csv(f"{root}ISIC_2019_Training_GroundTruth.csv")
@@ -19,12 +19,12 @@ def get_dataset(d_type="train"):
         if d_type == "train":
             df = uniform_dataframe(train_df)
             df["filepath"] = root + "ISIC_2019_Training_Input/" + df["image"] + ".jpg"
-            df["segpath"] = root + "SEG/" + df["image"] + "_segmentation.png"
+            df["segpath"] = root + "SEG/" + df["image"] + ".png"
             df = remove_duplicated(df)
         elif d_type == "valid":
             df = uniform_dataframe(valid_df)
             df["filepath"] = root + "ISIC_2019_Training_Input/" + df["image"] + ".jpg"
-            df["segpath"] = root + "SEG/" + df["image"] + "_segmentation.png"
+            df["segpath"] = root + "SEG/" + df["image"] + ".png"
 
     df.rename(columns={"image": "image_id"}, inplace=True)
     return df
@@ -43,6 +43,7 @@ def uniform_dataframe(df):
     choices = [0, 1, 2, 3, 4, 5, 6, 7]
     df["label"] = np.select(conditions, choices, default=0)
     df["image"] = df["image"].apply(lambda x: x.removesuffix("_downsampled"))
+    df = df[df["label"].isin([0, 1, 4])]
     return df
 
 def remove_duplicated(df):

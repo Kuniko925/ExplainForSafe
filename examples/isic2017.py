@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-root = f"../../dataset/SKIN/ISIC2017/"
-
 def get_dataset(d_type="train"):
+
+    root = f"../../dataset/SKIN/ISIC2017/"
 
     if d_type == "train":
         df = pd.read_csv(f"{root}ISIC-2017_Training_Part3_GroundTruth.csv")
@@ -19,7 +19,7 @@ def get_dataset(d_type="train"):
         df = pd.read_csv(f"{root}ISIC-2017_Test_v2_Part3_GroundTruth.csv")
         df = uniform_dataframe(df)
         df["filepath"] = root + "ISIC-2017_Test_v2_Data/" + df["image_id"] + ".jpg"
-        df["segpath"] = root + "ISIC-2017_ISIC-2017_Test_v2_Part1_GroundTruth/" + df["image_id"] + "_segmentation.png"
+        df["segpath"] = root + "ISIC-2017_Test_v2_Part1_GroundTruth/" + df["image_id"] + "_segmentation.png"
 
     return df
 
